@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Firebase Chat</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="wrapper">
+    <!-- Login Screen -->
+    <section id="auth-screen" class="auth-container">
+      <h1>Welcome to Firebase Chat</h1>
+      <form id="login-form" class="auth-form">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button id="login-btn" type="submit">Sign In / Register</button>
+        <button id="google-btn" type="button" class="google">Sign in with Google</button>
+      </form>
+      <p class="note">No account? Just type an email & password, and it will auto-create one.</p>
+    </section>
+
+    <!-- Chat Screen -->
+    <section id="chat-screen" class="chat hidden">
+      <header class="chat-header">
+        <div class="profile">
+          <img id="user-avatar" alt="User avatar">
+          <div class="user-details">
+            <strong id="user-name">User</strong>
+            <span id="user-email"></span>
+          </div>
+        </div>
+        <button id="signout-btn" class="signout">Sign Out</button>
+      </header>
+
+      <div id="messages" class="messages"></div>
+
+      <form id="message-form" class="message-form">
+        <input id="message-input" placeholder="Type a message..." autocomplete="off">
+        <button id="send-btn" type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
