@@ -1,187 +1,789 @@
-/* --- Global Reset --- */
+/* =========================================================
+   GLOBAL RESET & BASE
+   ========================================================= */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
-/* --- Layout --- */
 body {
-  height: 100vh;
+  background: radial-gradient(circle at top, #1e1e2f 0%, #0f0f17 100%);
+  color: #fff;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(180deg, #0f172a, #1e293b);
-  color: #f1f5f9;
-}
-
-.wrapper {
-  width: 100%;
-  max-width: 500px;
-  padding: 1rem;
-}
-
-/* --- Auth Section --- */
-.auth-container {
-  background: #1e293b;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.4);
-  text-align: center;
-}
-
-.auth-container h1 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.auth-form input {
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  background: #334155;
-  color: #fff;
-}
-
-.auth-form button {
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  background: #4f46e5;
-  color: #fff;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.auth-form button:hover {
-  background: #6366f1;
-}
-
-.auth-form .google {
-  background: #dc2626;
-}
-
-.note {
-  font-size: 0.85rem;
-  margin-top: 1rem;
-  color: #94a3b8;
-}
-
-/* --- Chat --- */
-.chat {
-  display: flex;
-  flex-direction: column;
-  height: 80vh;
-  background: #1e293b;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 0 25px rgba(0,0,0,0.4);
-}
-
-.chat-header {
-  background: #0f172a;
-  padding: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.profile img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
-.user-details span {
-  font-size: 0.85rem;
-  color: #94a3b8;
-}
-
-.signout {
-  background: transparent;
-  border: 1px solid #475569;
-  padding: 8px 12px;
-  border-radius: 8px;
-  color: #f1f5f9;
-  cursor: pointer;
-}
-
-.messages {
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.message {
-  background: #334155;
-  padding: 10px 14px;
-  border-radius: 10px;
-  max-width: 75%;
-  word-wrap: break-word;
-  font-size: 0.95rem;
-}
-
-.message.me {
-  align-self: flex-end;
-  background: #4f46e5;
-}
-
-.message .meta {
-  font-size: 0.75rem;
-  color: #cbd5e1;
-  margin-bottom: 4px;
-}
-
-.message-form {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid #334155;
-  background: #0f172a;
-  gap: 8px;
-}
-
-.message-form input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  background: #334155;
-  color: #fff;
-}
-
-.message-form button {
-  background: #4f46e5;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
-  cursor: pointer;
 }
 
 .hidden {
   display: none !important;
 }
 
-/* Mobile fix */
-@media (max-width: 600px) {
-  .chat {
-    height: 90vh;
+/* =========================================================
+   WRAPPER & ANIMATIONS
+   ========================================================= */
+.wrapper {
+  width: 100%;
+  max-width: 500px;
+  background: #24243a;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  padding: 2rem;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bubblePop {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.btn {
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 10px;
+  transition: 0.2s;
+}
+
+.btn.primary {
+  background: #0078ff;
+  color: #fff;
+}
+
+.btn.secondary {
+  background: #444;
+  color: #fff;
+}
+
+.btn.small {
+  background: none;
+  color: #bbb;
+  font-size: 22px;
+  padding: 0;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn.small:hover {
+  color: #ff5252;
+}
+
+/* =========================================================
+   AUTH SCREENS
+   ========================================================= */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  gap: 1.2rem;
+}
+
+.auth-container h2 {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: #2e2e48;
+  color: #fff;
+  font-size: 15px;
+}
+
+.auth-form input:focus {
+  background: #3a3a5c;
+  outline: 2px solid #0078ff;
+}
+
+.auth-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+.auth-buttons .btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: background 0.2s ease;
+}
+
+.divider {
+  text-align: center;
+  color: #aaa;
+  margin: 10px 0;
+}
+
+.google-icon {
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin: 10px auto;
+  cursor: pointer;
+  border-radius: 50%;
+  background: #fff;
+  padding: 8px;
+  transition: transform 0.2s ease;
+}
+
+.google-icon:hover {
+  transform: scale(1.1);
+}
+
+/* =========================================================
+   HOME SCREEN
+   ========================================================= */
+#home-screen {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+#home-screen h2 {
+  font-size: 1.6rem;
+}
+
+#home-screen p {
+  color: #bbb;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.signout {
+  background: #e74c3c;
+  color: #fff;
+  padding: 10px 18px;
+}
+
+.signout:hover {
+  background: #ff5e4d;
+}
+
+/* =========================================================
+   FLOATING ACTION BUTTON (FAB)
+   ========================================================= */
+.chat-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #0078ff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 26px;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+  transition: 0.3s ease;
+  z-index: 100;
+}
+
+.chat-fab:hover {
+  background: #0a84ff;
+  transform: scale(1.1);
+}
+
+/* =========================================================
+   POPUPS (Chat & User List)
+   ========================================================= */
+.chat-popup {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 360px;
+  max-height: 520px;
+  background: #2b2b45;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s ease;
+  z-index: 150;
+}
+
+#user-popup {
+  width: 340px;
+  max-height: 450px;
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2e2e48;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.user-item:hover {
+  background: #3a3a5c;
+}
+
+.status {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.online {
+  color: #27ae60;
+}
+
+.status.offline {
+  color: #aaa;
+}
+
+/* =========================================================
+   CHAT WINDOW
+   ========================================================= */
+.chat-header {
+  background: #1e1e30;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #333;
+}
+
+.chat-header h3 {
+  font-size: 16px;
+  color: #fff;
+}
+
+.messages {
+  flex: 1;
+  background: #1b1b2b;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 8px;
+}
+
+.msg {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  line-height: 1.4;
+  font-size: 14px;
+  animation: bubblePop 0.25s ease;
+  word-wrap: break-word;
+}
+
+.msg.me {
+  background: linear-gradient(145deg, #0078ff, #0061d1);
+  align-self: flex-end;
+  border-bottom-right-radius: 5px;
+}
+
+.msg:not(.me) {
+  background: #2e2e48;
+  align-self: flex-start;
+  border-bottom-left-radius: 5px;
+}
+
+.msg::before {
+  content: attr(data-user);
+  display: block;
+  font-size: 12px;
+  opacity: 0.6;
+  margin-bottom: 2px;
+  color: #ddd;
+}
+
+.msg-time {
+  display: block;
+  text-align: right;
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+.message-form {
+  display: flex;
+  padding: 10px;
+  background: #1e1e30;
+  gap: 10px;
+  align-items: center;
+}
+
+.message-form input {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  background: #2e2e48;
+  color: #fff;
+  font-size: 14px;
+}
+
+.message-form input::placeholder {
+  color: #888;
+}
+
+.message-form button {
+  background: #0078ff;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.message-form button:hover {
+  background: #0a84ff;
+}
+
+/* =========================================================
+   UNREAD BADGE
+   ========================================================= */
+.unread-badge {
+  position: absolute;
+  top: -6px;
+  left: -10px;
+  background: #ff4d4d;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+.user-item {
+  position: relative;
+  overflow: visible !important;
+}
+
+
+/* ==============================
+   CHAT MENU + NEW CHAT MODAL
+   ============================== */
+.chat-menu {
+  position: fixed;
+  bottom: 90px;
+  right: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 20;
+}
+
+.chat-menu button {
+  background: #0078ff;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.chat-menu button:hover {
+  background: #005fcc;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background: #1e1e2f;
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin: 10px 0 20px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-primary {
+  background: #0078ff;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #555;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+/* =========================================================
+   CUSTOM SCROLLBAR (for dark UI)
+   ========================================================= */
+
+/* Applies to all scrollable areas (like chat messages, user list) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2b; /* matches dark panel background */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #0078ff, #005fcc);
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0a84ff, #006eff);
+}
+
+/* Firefox (Dark Mode) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #0078ff #1a1a2b;
+}
+
+/* More specific: only style chat/message scrolls distinctly */
+.messages::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #0078ff, #004bb5);
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0a84ff, #006eff);
+}
+
+/* =========================================================
+   SIDENAV / NAVBAR
+   ========================================================= */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 100vh;
+  background: #1e1e30;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px 10px;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.nav-logo {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 30px;
+  padding-left: 15px;
+}
+
+.nav-links {
+  list-style: none;
+  width: 100%;
+}
+
+.nav-item {
+  color: #bbb;
+  padding: 12px 20px;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background: #0078ff;
+  color: #fff;
+}
+
+.nav-item i {
+  width: 20px;
+  text-align: center;
+}
+
+/* =========================================================
+   BURGER ICON (Show/Hide on Toggle)
+   ========================================================= */
+.nav-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1100;
+  background: #0078ff;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: opacity 0.3s ease;
+}
+
+.nav-toggle:hover {
+  background: #0a84ff;
+}
+
+/* Hide the burger while the menu is open */
+.nav-toggle.hidden-toggle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Show burger on mobile */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: block;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: auto;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.closed {
+    transform: translateY(-100%);
+  }
+
+  .nav-logo {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+  }
+
+  .nav-item {
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+}
+
+@media (min-width: 769px) {
+  .wrapper,
+  #home-screen {
+    margin-left: 240px;
+  }
+}
+
+/* =========================================================
+   TOAST NOTIFICATIONS (fixed to bottom-left)
+   ========================================================= */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #0078ff;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Center it *only* on very narrow mobile screens */
+@media (max-width: 600px) {
+  .toast {
+    left: 20px; /* keep bottom-left even on mobile */
+    transform: translateY(10px);
+  }
+  .toast.show {
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   PROFILE SCREEN
+   ========================================================= */
+#profile-screen {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+}
+
+.profile-info {
+  background: #2e2e48;
+  border-radius: 12px;
+  padding: 15px 20px;
+  width: 100%;
+  max-width: 350px;
+  text-align: left;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.profile-info p {
+  font-size: 15px;
+  color: #ddd;
+  margin-bottom: 8px;
+}
+
+.profile-info strong {
+  color: #fff;
+}
+
+/* Editable Profile Inputs */
+.profile-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  margin-top: 4px;
+  background: #1e1e30;
+  color: #fff;
+  font-size: 15px;
+}
+
+.profile-input:focus {
+  outline: 2px solid #0078ff;
+}
+
+.small-btn {
+  margin-top: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.profile-info button[disabled] {
+  background: #555 !important;
 }

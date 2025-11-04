@@ -1,47 +1,133 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Firebase Chat</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SebbyChat</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
 </head>
+
 <body>
-  <main class="wrapper">
-    <!-- Login Screen -->
-    <section id="auth-screen" class="auth-container">
-      <h1>Welcome to Firebase Chat</h1>
+  <!-- Sidebar / Top Navbar (hidden until login) -->
+  <nav class="sidebar hidden" id="sidebar">
+    <div class="nav-logo">SebbyChat</div>
+    <ul class="nav-links">
+      <li class="nav-item active" data-page="home">
+        <i class="fas fa-home"></i> Home
+      </li>
+      <li class="nav-item" data-page="profile">
+        <i class="fas fa-user"></i> Profile
+      </li>
+      <li class="nav-item" data-page="vouchers">
+        <i class="fas fa-ticket-alt"></i> Vouchers
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Hamburger toggle for mobile (hidden until login) -->
+  <button id="nav-toggle" class="nav-toggle hidden">☰</button>
+
+  <div class="wrapper">
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="auth-container">
+      <h2>Welcome to SebbyChat</h2>
+
       <form id="login-form" class="auth-form">
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button id="login-btn" type="submit">Sign In / Register</button>
-        <button id="google-btn" type="button" class="google">Sign in with Google</button>
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+
+        <div class="auth-buttons">
+          <button type="button" id="login-btn" class="btn primary">Login</button>
+          <button type="button" id="register-btn" class="btn secondary">Register</button>
+        </div>
+
+        <div class="divider">or</div>
+
+        <img
+          id="google-btn"
+          src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+          alt="Sign in with Google"
+          class="google-icon"
+        />
       </form>
-      <p class="note">No account? Just type an email & password, and it will auto-create one.</p>
-    </section>
+    </div>
+
+    <!-- Home Screen -->
+    <div id="home-screen" class="hidden">
+      <h2>Welcome, <span id="home-username"></span> 👋</h2>
+      <p>Click the chat button to start messaging.</p>
+    </div>
+
+    <!-- Profile Screen -->
+    <div id="profile-screen" class="hidden">
+      <h2>Your Profile</h2>
+      <div class="profile-info">
+        <p><strong>Email:</strong><br />
+          <span id="profile-email" class="profile-field">Loading...</span>
+        </p>
+        <p><strong>Display Name:</strong><br />
+          <input type="text" id="display-name-input" class="profile-input" placeholder="Enter your name" />
+          <button id="save-name-btn" class="btn secondary small-btn">Save</button>
+        </p>
+      </div>
+      <button id="signout-btn" class="btn signout">Sign Out</button>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <button id="chat-fab" class="chat-fab hidden">💬</button>
+
+    <!-- Chat FAB Menu -->
+    <div id="chat-menu" class="chat-menu hidden">
+      <button id="new-chat-btn">➕ New Chat</button>
+      <button id="open-users-btn">👥 Chat List</button>
+    </div>
+
+    <!-- User List Popup -->
+    <div id="user-popup" class="chat-popup hidden">
+      <div class="chat-header">
+        <h3>Chats</h3>
+        <button id="close-user-popup" class="btn small">×</button>
+      </div>
+
+      <div id="user-list" class="user-list"></div>
+    </div>
 
     <!-- Chat Screen -->
-    <section id="chat-screen" class="chat hidden">
-      <header class="chat-header">
-        <div class="profile">
-          <img id="user-avatar" alt="User avatar">
-          <div class="user-details">
-            <strong id="user-name">User</strong>
-            <span id="user-email"></span>
-          </div>
-        </div>
-        <button id="signout-btn" class="signout">Sign Out</button>
-      </header>
+    <div id="chat-screen" class="chat-popup hidden">
+      <div class="chat-header">
+        <h3 id="chat-with">Chat</h3>
+        <button id="close-chat" class="btn small">×</button>
+      </div>
 
       <div id="messages" class="messages"></div>
 
       <form id="message-form" class="message-form">
-        <input id="message-input" placeholder="Type a message..." autocomplete="off">
-        <button id="send-btn" type="submit">Send</button>
+        <input
+          id="message-input"
+          type="text"
+          placeholder="Type a message..."
+          autocomplete="off"
+        />
+        <button type="submit" class="btn">Send</button>
       </form>
-    </section>
-  </main>
+    </div>
+  </div>
 
+  <div id="new-chat-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Start New Chat</h3>
+    <input type="text" id="new-chat-email" placeholder="Enter email or username" />
+    <div class="modal-actions">
+      <button id="start-chat-btn" class="btn-primary">Start Chat</button>
+      <button id="cancel-chat-btn" class="btn-secondary">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Firebase + Main Script -->
   <script type="module" src="script.js"></script>
 </body>
 </html>
