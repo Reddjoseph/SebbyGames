@@ -1,0 +1,469 @@
+/* ====== Vouchers module (polished) ====== */
+.vouchers-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 22px;
+  animation: fadeIn 0.36s ease;
+}
+
+/* headings */
+.vouchers-container h2 {
+  font-size: 1.9rem;
+  margin-bottom: 0;
+}
+.subtitle {
+  color: #bfc7d6;
+  font-size: 14px;
+  margin-top: 2px;
+  margin-bottom: 8px;
+}
+
+/* small label and help */
+.label-small {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: #c6cfe6;
+  font-size: 13px;
+}
+.help-note {
+  color: #99a5c8;
+  font-size: 13px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+/* FORM */
+.voucher-form,
+.redeem-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 720px;
+  background: linear-gradient(180deg, rgba(30,30,48,0.85), rgba(22,22,36,0.85));
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+.voucher-form input[type="text"],
+.voucher-form input[type="date"],
+.voucher-form textarea,
+.redeem-form input[type="text"] {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+  color: #eaf0ff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.form-row input[type="date"] {
+  max-width: 220px;
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn.primary {
+  background: linear-gradient(90deg,#1486ff,#0060d1);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(6,102,255,0.18);
+}
+.btn.primary:hover { transform: translateY(-2px); }
+.btn.secondary {
+  background: rgba(255,255,255,0.06);
+  color: #eaf0ff;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.btn.secondary:hover { background: rgba(255,255,255,0.09); }
+
+/* Role headers and tags */
+.role-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.role-header h3 { margin: 0; font-size: 1.2rem; color: #fff; }
+.tag {
+  background: #0078ff;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Admin panel style */
+.admin-mode {
+  width: 100%;
+  max-width: 980px;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(0,120,255,0.04), rgba(12,12,20,0.65));
+  border: 1px solid rgba(0,120,255,0.06);
+}
+
+/* Admin grid */
+.admin-voucher-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+/* Admin card */
+.admin-voucher {
+  background: linear-gradient(180deg, rgba(20,22,32,0.72), rgba(14,14,20,0.72));
+  border-radius: 12px;
+  padding: 12px;
+  text-align: left;
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.03);
+  transition: transform .18s ease, box-shadow .2s ease;
+}
+.admin-voucher:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.45);
+}
+.admin-voucher h4 { color: #fff; margin-bottom: 6px; }
+.admin-voucher p { color: #c7d0e6; font-size: 13px; margin: 4px 0; }
+
+/* Admin card actions row */
+.admin-actions {
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+.admin-actions button {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+}
+.btn-delete {
+  background: linear-gradient(90deg,#ff5b5b,#e03f3f);
+  color:#fff;
+}
+.copy-btn {
+  background: rgba(255,255,255,0.04);
+  color:#fff;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* copy feedback */
+.copy-feedback {
+  display:inline-block;
+  margin-left:8px;
+  color:#9fe6a7;
+  font-size:12px;
+  opacity:0;
+  transform: translateY(-2px);
+  transition: all .18s ease;
+}
+.copy-feedback.show {
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* Claimed badge & tooltip */
+.claimed-badge {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.claimed-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #27ae60;
+  box-shadow: 0 4px 12px rgba(39,174,96,0.18);
+}
+.claimed-label {
+  color: #27ae60;
+  font-weight:700;
+  font-size:12px;
+}
+
+/* tooltip showing claimer email on hover */
+.claimed-badge .claimer-tip {
+  position: absolute;
+  top: -34px;
+  right: 0;
+  white-space: nowrap;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity .14s ease, transform .14s ease;
+}
+.claimed-badge:hover .claimer-tip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* User wallet */
+.user-section {
+  width: 100%;
+  max-width: 520px;
+  padding: 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(20,30,20,0.04), rgba(8,8,12,0.6));
+  border: 1px solid rgba(40,40,40,0.25);
+}
+.voucher-list { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+
+.voucher-item {
+  display:block;
+  background: linear-gradient(180deg, rgba(24,26,36,0.72), rgba(14,14,20,0.72));
+  padding: 12px;
+  border-radius: 10px;
+  border-left: 4px solid #27ae60;
+  position: relative;
+  transition: transform .14s ease;
+}
+.voucher-item h4 { margin:0; color:#fff; }
+.voucher-item p { color:#c7d0e6; font-size:13px; margin:6px 0; }
+
+.voucher-item.redeemed { opacity:0.85; filter: saturate(.9); }
+
+/* small responsive */
+@media (max-width: 760px) {
+  .voucher-form, .redeem-form { max-width: 94%; }
+  .admin-voucher-list { grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); }
+  .claimed-badge .claimer-tip { right: -6px; top: -40px; }
+}
+
+/* ===== Clipboard Copy Icon ===== */
+.copy-icon {
+  color: #9fc9ff;
+  margin-left: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.copy-icon:hover {
+  color: #fff;
+  transform: scale(1.3) rotate(8deg);
+}
+
+.copy-feedback {
+  display: inline-block;
+  margin-left: 6px;
+  color: #6fffa1;
+  font-size: 12px;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+.copy-feedback.show {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* ===== Claimed Badge (restored) ===== */
+.claimed-badge {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  cursor: pointer;
+}
+.claimed-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #27ae60;
+  box-shadow: 0 0 8px rgba(39,174,96,0.5);
+}
+.claimed-label {
+  color: #27ae60;
+  font-size: 12px;
+  font-weight: 600;
+}
+.claimer-tip {
+  position: absolute;
+  top: -32px;
+  right: 0;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.claimed-badge:hover .claimer-tip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade out animation for deleted voucher */
+.admin-voucher.fade-out {
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Delete confirmation modal */
+.delete-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+}
+.delete-modal.show {
+  display: flex;
+  animation: fadeIn 0.2s ease;
+}
+.delete-modal-content {
+  background: #1e1e2f;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  width: 90%;
+  max-width: 360px;
+}
+.delete-modal-content h4 {
+  margin-bottom: 12px;
+  color: #fff;
+}
+.delete-modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 16px;
+}
+.delete-modal-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+#confirmDelete {
+  background: #e74c3c;
+  color: #fff;
+}
+#cancelDelete {
+  background: #555;
+  color: #fff;
+}
+
+/* ================= DELETE CONFIRMATION MODAL ================= */
+.delete-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.delete-modal.show {
+  display: flex;
+  opacity: 1;
+}
+
+.delete-modal-content {
+  background: linear-gradient(180deg, #1b1d2b, #111320);
+  color: #fff;
+  border-radius: 14px;
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transform: scale(0.85);
+  animation: zoomInModal 0.28s ease forwards;
+  width: 90%;
+  max-width: 360px;
+}
+
+@keyframes zoomInModal {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.delete-modal-content h4 {
+  font-size: 1.05rem;
+  margin-bottom: 18px;
+}
+
+.delete-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+#confirmDelete,
+#cancelDelete {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+#confirmDelete {
+  background: linear-gradient(90deg, #ff4e4e, #c91e1e);
+  color: #fff;
+}
+#confirmDelete:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #ff6666, #e63a3a);
+}
+
+#cancelDelete {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ddd;
+}
+#cancelDelete:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.05);
+}

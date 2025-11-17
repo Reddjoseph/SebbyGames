@@ -213,29 +213,33 @@ body {
   background: #ff5e4d;
 }
 
-/* =========================================================
-   FLOATING ACTION BUTTON (FAB)
-   ========================================================= */
+/* =====================================================
+   ✅ Floating Chat Button
+   ===================================================== */
 .chat-fab {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  background: #0078ff;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
   width: 60px;
   height: 60px;
-  font-size: 26px;
+  border-radius: 50%;
+  background: var(--accent-color, #0078ff);
+  color: #fff;
+  font-size: 28px;
+  border: none;
   cursor: pointer;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
-  transition: 0.3s ease;
-  z-index: 100;
+  z-index: 9999; /* keep it above everything */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  transition: background 0.2s, transform 0.2s;
 }
 
 .chat-fab:hover {
-  background: #0a84ff;
-  transform: scale(1.1);
+  background: #005fcc;
+  transform: scale(1.05);
+}
+
+.hidden {
+  display: none !important;
 }
 
 /* =========================================================
@@ -605,6 +609,12 @@ body {
   text-align: center;
 }
 
+@media (max-width: 768px) {
+  .sidebar.closed {
+    transform: translateY(-100%);
+  }
+}
+
 /* =========================================================
    BURGER ICON (Show/Hide on Toggle)
    ========================================================= */
@@ -646,52 +656,106 @@ body {
 /* =========================================================
    RESPONSIVE
    ========================================================= */
+/* =========================================================
+   🌙 Mobile Navbar (modern dropdown design)
+   ========================================================= */
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
-    height: auto;
-    width: 100%;
-    flex-direction: row;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    background: rgba(30, 30, 48, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-around;
-    padding: 10px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 12px 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    transform: translateY(-120%);
+    transition: transform 0.35s ease, opacity 0.3s ease;
+    z-index: 1000;
+    opacity: 0;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  /* When open */
+  .sidebar.open {
     transform: translateY(0);
-    transition: transform 0.3s ease;
+    opacity: 1;
   }
 
-  .sidebar.closed {
-    transform: translateY(-100%);
-  }
-
+  /* Hide the logo (mobile only) */
   .nav-logo {
     display: none;
   }
 
   .nav-links {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     align-items: center;
     width: 100%;
+    gap: 8px;
+    padding: 0 10px;
   }
 
   .nav-item {
-    padding: 10px;
-    border-radius: 6px;
-    font-size: 14px;
+    width: 90%;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #ddd;
+    text-align: center;
+    transition: background 0.25s ease, transform 0.15s ease;
+    backdrop-filter: blur(6px);
   }
 
+  .nav-item:hover {
+    background: rgba(0, 120, 255, 0.15);
+    color: #fff;
+    transform: scale(1.03);
+  }
+
+  .nav-item.active {
+    background: rgba(0, 120, 255, 0.25);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 120, 255, 0.3);
+  }
+
+  /* Ensure burger is visible and nicely styled */
   .nav-toggle {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: rgba(0, 120, 255, 0.9);
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0, 120, 255, 0.4);
+    cursor: pointer;
+    z-index: 1100;
+    transition: background 0.25s, transform 0.2s;
   }
-}
 
-@media (min-width: 769px) {
-  .wrapper,
-  #home-screen {
-    margin-left: 240px;
+  .nav-toggle:hover {
+    background: rgba(10, 132, 255, 1);
+    transform: scale(1.05);
+  }
+
+  /* Hide burger when open */
+  .nav-toggle.hidden-toggle {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
@@ -787,3 +851,4 @@ body {
 .profile-info button[disabled] {
   background: #555 !important;
 }
+

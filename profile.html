@@ -1,0 +1,43 @@
+<div id="profile-screen" class="profile-container">
+  <h2>Your Profile</h2>
+  <div class="profile-info">
+    <!-- Role badge -->
+    <div id="profile-role" class="role-badge">Loading...</div>
+
+    <!-- ✅ Email row -->
+    <div class="info-row">
+      <strong>Email:</strong>
+      <span id="profile-email">Loading...</span>
+    </div>
+
+    <!-- ✅ Nickname row -->
+    <div class="nickname-row">
+      <strong>Nickname:</strong>
+      <div class="nickname-inline">
+        <span id="nickname-display">Loading...</span>
+        <button id="edit-nickname-btn" class="edit-icon">
+          <i class="fas fa-edit"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ✅ Edit nickname section -->
+    <div id="nickname-edit" class="nickname-edit hidden">
+      <input
+        type="text"
+        id="nickname-input"
+        maxlength="12"
+        placeholder="Enter nickname (max 12)"
+      />
+      <div class="nickname-actions">
+        <button id="save-name-btn" class="btn secondary small-btn">Save</button>
+        <button id="cancel-edit-btn" class="btn small-btn cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <button id="signout-btn" class="btn signout">Sign Out</button>
+</div>
+
+<!-- ✅ Toast notification -->
+<div id="toast" class="toast hidden"></div>

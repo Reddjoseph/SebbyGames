@@ -1,0 +1,202 @@
+/* profile.css */
+.profile-screen {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  color: #fff;
+  animation: fadeIn 0.4s ease;
+}
+
+.profile-info {
+  background: #2e2e48;
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 350px;
+  text-align: left;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+/* ✅ Role Badge */
+.role-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+  margin: 0 auto 12px;
+  display: block;
+  width: fit-content;
+}
+
+.role-badge.user {
+  background: linear-gradient(135deg, #0078ff, #005fcc);
+  box-shadow: 0 0 8px rgba(0, 120, 255, 0.5);
+}
+
+.role-badge.admin {
+  background: linear-gradient(135deg, #ffcc33, #d4a017);
+  color: #222;
+  font-weight: 700;
+  animation: glowPulse 2s infinite ease-in-out;
+  box-shadow: 0 0 14px rgba(255, 204, 51, 0.7);
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 204, 51, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 204, 51, 1);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 204, 51, 0.6);
+  }
+}
+
+/* ✅ Email and nickname rows */
+.info-row,
+.nickname-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+  color: #ddd;
+}
+
+.info-row span,
+#nickname-display {
+  color: #f0f0f0;
+  font-weight: normal;
+  font-size: 15px;
+}
+
+/* Nickname inline group */
+.nickname-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ✏️ Edit icon */
+.edit-icon {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.edit-icon:hover {
+  color: #fff;
+}
+
+/* ✅ Animated edit section */
+.nickname-edit {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.35s ease;
+}
+
+.nickname-edit.show {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 10px;
+}
+
+#nickname-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background: #1e1e30;
+  color: #fff;
+  font-size: 15px;
+}
+
+#nickname-input:focus {
+  outline: 2px solid #0078ff;
+}
+
+/* ✅ Save / Cancel buttons */
+.nickname-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.small-btn {
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+.cancel-btn {
+  background: #555;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background: #666;
+}
+
+.signout {
+  background: #e74c3c;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 10px;
+}
+
+.signout:hover {
+  background: #ff5e4d;
+}
+
+/* ✅ Toast notification */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;             
+  transform: none;        
+  background: #222;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, bottom 0.3s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  opacity: 1;
+  bottom: 50px;
+}
+
+
+/* Fade-in for main container */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

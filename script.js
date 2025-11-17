@@ -43,6 +43,10 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+window.firebaseApp = app;
+window.firebaseAuth = auth;
+window.firebaseDB = db
+
 /* -----------------------------
    DOM Elements
 ----------------------------- */
@@ -69,6 +73,57 @@ const msgInput = document.getElementById("message-input");
 const closeChat = document.getElementById("close-chat");
 
 const homeUsername = document.getElementById("home-username");
+
+/* =========================================================
+   ✅ Mobile Navbar Toggle (fully hides after selection)
+   Works with dynamic navigation (navigateTo)
+   ========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+  const sidebar = document.getElementById("sidebar");
+  const navToggle = document.getElementById("nav-toggle");
+
+  if (!sidebar || !navToggle) return;
+
+  // --- Toggle sidebar open/close ---
+  navToggle.addEventListener("click", () => {
+    const isOpen = sidebar.classList.contains("open");
+    sidebar.classList.toggle("open", !isOpen);
+    navToggle.classList.toggle("hidden-toggle", !isOpen);
+  });
+
+  // --- Function: Close sidebar (mobile only) ---
+  const closeSidebar = () => {
+    if (window.innerWidth <= 768) {
+      sidebar.classList.remove("open");
+      navToggle.classList.remove("hidden-toggle");
+    }
+  };
+
+  // --- Attach click listeners to nav-items ---
+  const attachNavItemHandlers = () => {
+    document.querySelectorAll(".nav-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        closeSidebar();
+      });
+    });
+  };
+
+  // Attach once on load
+  attachNavItemHandlers();
+
+  // --- Watch for page changes caused by navigateTo() ---
+  const observer = new MutationObserver(() => attachNavItemHandlers());
+  observer.observe(document.getElementById("page-container"), { childList: true, subtree: true });
+
+  // --- Close sidebar if window resized back to desktop ---
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      sidebar.classList.remove("open");
+      navToggle.classList.remove("hidden-toggle");
+    }
+  });
+});
+
 
 /* -----------------------------
    Chat FAB / New Chat DOM
@@ -105,6 +160,8 @@ function showToast(message, type = "info") {
     setTimeout(() => toast.remove(), 400);
   }, 3000);
 }
+
+window.showToast = showToast;
 
 /* -----------------------------
    Auth
@@ -201,27 +258,32 @@ async function handleSignOut() {
 
 
 /* -----------------------------
-   Auth State
+   Auth State (Updated)
 ----------------------------- */
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   const sidebar = document.getElementById("sidebar");
   const navToggle = document.getElementById("nav-toggle");
 
   if (user) {
     authScreen.classList.add("hidden");
-    homeScreen.classList.remove("hidden");
     chatFab.classList.remove("hidden");
 
     sidebar?.classList.remove("hidden");
     navToggle?.classList.remove("hidden");
 
-    homeUsername.textContent = user.displayName || user.email.split("@")[0];
+    // Load your real home page dynamically now 🎯
+    await navigateTo("home");
+
+    // Set username for home
+    const homeUsername = document.getElementById("home-username");
+    if (homeUsername)
+      homeUsername.textContent = user.displayName || user.email.split("@")[0];
+
     setOnlineStatus(user.uid, true);
     if (unsubscribeUsers) unsubscribeUsers();
     subscribeUsers(user);
   } else {
     authScreen.classList.remove("hidden");
-    homeScreen.classList.add("hidden");
     chatFab.classList.add("hidden");
     chatScreen.classList.add("hidden");
     userPopup.classList.add("hidden");
@@ -511,84 +573,106 @@ async function openChat(otherUserId, otherUserEmail) {
   };
 }
 
-/* -----------------------------
-   ✅ Mobile Navbar + Page Navigation (Fully Fixed)
------------------------------ */
-document.addEventListener("DOMContentLoaded", () => {
-  const navToggle = document.getElementById("nav-toggle");
-  const sidebar = document.getElementById("sidebar");
-  const navItems = document.querySelectorAll(".nav-item");
-  const homeScreenLocal = document.getElementById("home-screen");
-  const profileScreen = document.getElementById("profile-screen");
+/* =========================================================
+   FINAL — Stable Dynamic Navigation + FAB Toggle (Working)
+   ========================================================= */
 
-  if (!navToggle || !sidebar) return;
+async function navigateTo(page) {
+  const pageContainer = document.getElementById("page-container");
+  if (!pageContainer) return console.error("❌ Missing #page-container.");
 
-  function handleResize() {
-    if (window.innerWidth <= 768) {
-      sidebar.classList.add("closed");
-    } else {
-      sidebar.classList.remove("closed");
-      navToggle.classList.remove("hidden-toggle");
-    }
+  try {
+    // Load page HTML
+    const res = await fetch(`${page}.html?t=${Date.now()}`);
+    if (!res.ok) throw new Error(`Page "${page}" not found`);
+    pageContainer.innerHTML = await res.text();
+
+    // Remove old per-page CSS
+    document.querySelectorAll('link[data-dynamic-css]').forEach(l => l.remove());
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = `${page}.css?t=${Date.now()}`;
+    css.dataset.dynamicCss = "true";
+    document.head.appendChild(css);
+
+    // Replace page JS
+    const oldScript = document.getElementById("dynamic-page-script");
+    if (oldScript) oldScript.remove();
+    const script = document.createElement("script");
+    script.id = "dynamic-page-script";
+    script.type = "module";
+    script.src = `${page}.js?t=${Date.now()}`;
+    document.body.appendChild(script);
+
+    // Always show FAB and close all popups after navigation
+    document.getElementById("chat-fab")?.classList.remove("hidden");
+    ["user-popup", "chat-screen", "new-chat-modal"].forEach(id =>
+      document.getElementById(id)?.classList.add("hidden")
+    );
+
+    // 🔁 Reconnect FAB handler after content replacement
+    rebindFabHandler();
+
+    console.log(`✅ Navigated to ${page}`);
+  } catch (err) {
+    console.error("Navigation error:", err);
+    pageContainer.innerHTML = `<p style="text-align:center;color:#f55;">Error loading ${page}</p>`;
   }
-  handleResize();
-  window.addEventListener("resize", handleResize);
+}
 
-  // ✅ Toggle sidebar open/close
-  navToggle.addEventListener("click", () => {
-    sidebar.classList.toggle("closed");
-    if (!sidebar.classList.contains("closed")) {
-      navToggle.classList.add("hidden-toggle"); // hide burger when open
-    }
+/* =========================================================
+   🔁 Persistent FAB Handler — rebinds after each navigation
+   ========================================================= */
+function rebindFabHandler() {
+  const chatFab = document.getElementById("chat-fab");
+  const userPopup = document.getElementById("user-popup");
+  const chatScreen = document.getElementById("chat-screen");
+  const newChatModal = document.getElementById("new-chat-modal");
+
+  if (!chatFab || !userPopup) return;
+
+  // Remove existing listeners (clone trick)
+  const clone = chatFab.cloneNode(true);
+  chatFab.parentNode.replaceChild(clone, chatFab);
+
+  clone.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isOpen = !userPopup.classList.contains("hidden");
+    userPopup.classList.toggle("hidden", isOpen);
+    chatScreen?.classList.add("hidden");
+    newChatModal?.classList.add("hidden");
   });
 
-  // ✅ Navigation + burger behavior + page switching
-  navItems.forEach((item) => {
-    item.addEventListener("click", async () => {
-      const page = item.getAttribute("data-page");
+  console.log("💬 FAB handler rebound successfully");
+}
 
-      // highlight current item
-      navItems.forEach((i) => i.classList.remove("active"));
+/* =========================================================
+   🧭 Navbar Bindings
+   ========================================================= */
+function bindNavItems() {
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    const cloned = item.cloneNode(true);
+    item.parentNode.replaceChild(cloned, item);
+  });
+
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const page = item.dataset.page;
+      if (!page) return;
+      document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
       item.classList.add("active");
-
-      // hide all main sections
-      if (homeScreenLocal) homeScreenLocal.classList.add("hidden");
-      if (profileScreen) profileScreen.classList.add("hidden");
-
-      // show the selected one
-      if (page === "home" && homeScreenLocal) {
-        homeScreenLocal.classList.remove("hidden");
-      } else if (page === "profile" && profileScreen) {
-        profileScreen.classList.remove("hidden");
-
-        // ✅ load user info
-        const user = auth.currentUser;
-        if (user) {
-          const profileEmail = document.getElementById("profile-email");
-          const displayNameInput = document.getElementById("display-name-input");
-          const saveNameBtn = document.getElementById("save-name-btn");
-
-          if (profileEmail) profileEmail.textContent = user.email || "N/A";
-          const name = user.displayName || user.email.split("@")[0];
-          if (displayNameInput) displayNameInput.value = name;
-
-          if (saveNameBtn) {
-            saveNameBtn.disabled = true;
-            saveNameBtn.style.opacity = "0.6";
-            saveNameBtn.style.cursor = "not-allowed";
-          }
-        }
-      }
-
-      // ✅ on mobile, close sidebar and show burger again
-      if (window.innerWidth <= 768) {
-        sidebar.classList.add("closed");
-        navToggle.classList.remove("hidden-toggle");
-      }
+      navigateTo(page);
     });
   });
-});
+}
 
+document.addEventListener("DOMContentLoaded", () => {
+  bindNavItems();
+  rebindFabHandler();
+  console.log("✅ Navigation + FAB initialized (final stable build)");
+});
 
 /* -----------------------------
    Event Listeners
