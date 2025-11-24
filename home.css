@@ -1,35 +1,163 @@
-/* home.css */
-.home-screen {
+/* ===== Body & Container ===== */
+body {
+  font-family: Poppins, sans-serif;
+  background: url('assets/background1.png') no-repeat center center/cover;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+
+.home-container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 20px;
+  backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.3);
+  border-radius: 14px;
+}
+
+/* ===== Headings ===== */
+h2 { font-size: 2rem; margin-bottom: 0; }
+.subtitle { color: #bfc7d6; font-size: 14px; margin: 4px 0 16px; }
+
+/* ===== Filters ===== */
+.filters-container {
+  display: flex;
   justify-content: center;
-  gap: 15px;
-  padding: 30px;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  margin-bottom: 18px;
+}
+
+.search-box,
+#filterSelect {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  background: rgba(255,255,255,0.05);
   color: #fff;
-  animation: fadeIn 0.4s ease;
+  width: 180px;
+  text-align: left;
 }
 
-.home-screen h2 {
-  font-size: 1.8rem;
+.search-box::placeholder,
+#filterSelect option { color: #ccc; }
+
+/* ===== Buttons ===== */
+.btn {
+  border: none;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.btn.primary {
+  background: linear-gradient(90deg,#1486ff,#0060d1);
   color: #fff;
+  box-shadow: 0 8px 22px rgba(6,102,255,0.2);
+}
+.btn.primary:hover { transform: translateY(-2px); }
+
+/* ===== Admin Panel ===== */
+.admin-panel { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+.add-panel {
+  background: rgba(30,30,48,0.85);
+  padding: 16px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.05);
+
+  /* Collapsible animation */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
 }
 
-.home-screen p {
-  color: #bbb;
-  font-size: 15px;
-  max-width: 350px;
-  line-height: 1.4;
+/* When open, JS sets max-height inline dynamically */
+/* fallback max-height if needed */
+.add-panel.open {
+  padding: 16px;
+  max-height: 700px; /* enough for larger textarea */
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.add-panel input,
+.add-panel textarea {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.add-panel textarea {
+  height: 300px;   /* larger fixed height */
+  resize: none;    /* disable manual resizing */
+}
+
+.add-panel input:focus,
+.add-panel textarea:focus {
+  border-color: #1486ff;
+  box-shadow: 0 0 8px rgba(20,134,255,0.3);
+}
+
+/* ===== Item List ===== */
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.item-card {
+  background: linear-gradient(180deg, rgba(24,26,36,0.8), rgba(14,14,20,0.8));
+  padding: 16px;
+  border-radius: 14px;
+  text-align: left;
+  border-left: 4px solid #27ae60;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.item-card.fade-in { opacity: 1; }
+
+.item-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 14px 32px rgba(0,0,0,0.5);
+  filter: brightness(1.05);
+}
+
+.item-card h4 { margin: 0; color: #fff; font-size: 1.15rem; }
+.item-card p { margin: 6px 0; color: #c7d0e6; font-size: 13px; }
+.item-price { color: #9fe6a7; font-weight: 700; font-size: 14px; }
+
+/* ===== Responsive ===== */
+@media (max-width: 760px) {
+  .filters-container { flex-direction: column; gap: 10px; align-items: center; }
+  .search-box,
+  #filterSelect,
+  .add-panel,
+  .btn.primary { width: 94%; }
 }

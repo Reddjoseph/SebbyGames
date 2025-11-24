@@ -1,4 +1,41 @@
-<div id="home-screen" class="home-screen">
-  <h2>Welcome, <span id="home-username"></span> 👋</h2>
-  <p>Click the chat button to start messaging your friends.</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Shop Home</title>
+  <link rel="stylesheet" href="home.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <div class="home-container">
+    <h2>🛍️ Item Listings</h2>
+    <div class="subtitle">Browse available shop items.</div>
+
+    <!-- Filters -->
+    <div class="filters-container">
+      <input type="text" id="searchBox" class="search-box" placeholder="Search items...">
+      <select id="filterSelect">
+        <option value="">Sort by Price</option>
+        <option value="low">Low → High</option>
+        <option value="high">High → Low</option>
+      </select>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="admin-panel hidden">
+      <button id="toggleAddPanel" class="btn primary"><i class="fa fa-plus"></i> Add Item</button>
+      <div class="add-panel" id="addPanelContent">
+        <input type="text" id="item-title" placeholder="Item Title" required>
+        <textarea id="item-desc" placeholder="Item Description" rows="2" required></textarea>
+        <input type="number" id="item-price" placeholder="Price" min="1" required>
+        <button id="addItemFormBtn" class="btn primary">Submit Item</button>
+      </div>
+    </div>
+
+    <!-- Items -->
+    <div id="itemList" class="item-list"></div>
+  </div>
+
+  <script type="module" src="home.js"></script>
+</body>
+</html>
